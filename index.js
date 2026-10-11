@@ -6,11 +6,17 @@ const app = express();
 app.use(express.static(__dirname));
 
 const bodyParser = require('body-parser');
+
 const expressSession = require('express-session')({
   secret: 'secret',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    maxAge: 60000
+  }
 });
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,7 +38,7 @@ app.use(passport.session());
 /* MONGOOSE SETUP */
 
 const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose').default;
+const passportLocalMongoose = require('passport-local-mongoose');
 mongoose.connect('mongodb://localhost/MyDatabase');
 
 const Schema = mongoose.Schema;
